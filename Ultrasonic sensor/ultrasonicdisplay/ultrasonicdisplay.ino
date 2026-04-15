@@ -13,13 +13,16 @@ long duration;
 int distance;
 
 void setup() {
+  Serial.begin(9600);
+  Serial.println("Serial Communication Started...");
+
   // Initialize LCD
   lcd.init();
   lcd.backlight();
   
   // Set Pin Modes
-  pinMode(trigPin, OUTPUT); // We "send" the shout from here
-  pinMode(echoPin, INPUT);  // We "listen" for the echo here
+  pinMode(trigPin, OUTPUT); 
+  pinMode(echoPin, INPUT);  
   
   lcd.setCursor(0, 0);
   lcd.print("Digital Ruler");
@@ -37,16 +40,22 @@ void loop() {
   delayMicroseconds(10);
   digitalWrite(trigPin, LOW);
 
-  // 4. Measure the "Echo" (the time in microseconds)
+  // 4. Measure the "Echo"
   duration = pulseIn(echoPin, HIGH);
 
-  // 5. Calculate Distance (Speed of sound is approx 0.034 cm/us)
+  // 5. Calculate Distance
   distance = duration * 0.034 / 2;
 
-  // 6. Display the result
+  Serial.print("Distance: ");
+  Serial.print(distance);
+  Serial.println(" cm");
+
+  // 6. Display the result on LCD
   lcd.setCursor(0, 0);
-  lcd.print("Distance:      "); // Clear the line with spaces
+  lcd.print("Distance:      "); 
   lcd.setCursor(10, 0);
   lcd.print(distance);
   lcd.print("cm");
+
+  delay(200); 
 }
